@@ -2,6 +2,8 @@
 
 像 Windows 便签一样的 Chrome / Edge 扩展：在侧边栏、网页浮窗或全屏日记本里随手记，内容自动保存；随时查看、复制，或一键插入当前网页的输入框。界面沿用 DSH 的设计语言：中性色、细边框、系统字体与克制的蓝色强调。
 
+**[下载最新版本](https://github.com/xm130812-byte/sticky-notes/releases/latest)** · Manifest V3 · 无需构建 · Chrome / Edge 116+
+
 <p>
   <img src="docs/preview-list.png" width="360" alt="侧边栏便签列表">
   <img src="docs/preview-floating.png" width="760" alt="网页浮窗">
