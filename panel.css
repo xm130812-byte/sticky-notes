@@ -1,0 +1,1211 @@
+/* 便签 · Sticky Notes — 面板样式
+ * 视觉语言与 DSH 保持一致：中性色、细边框、系统字体、黑色主按钮，
+ * 蓝色只用于链接/焦点/选中态；便签颜色以低饱和底色 + 左侧色条表达。
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --app-bg: #f9fafb;
+  --surface: #ffffff;
+  --surface-2: #f5f7fa;
+  --card: #ffffff;
+
+  --ink: #0f1115;
+  --ink-2: #353638;
+  --muted: #61666b;
+  --tertiary: #81858c;
+
+  --line: rgba(15, 17, 21, 0.1);
+  --line-strong: rgba(15, 17, 21, 0.16);
+  --field: #f5f7fa;
+  --field-hover: rgba(38, 49, 72, 0.06);
+
+  --brand: #0f1115;
+  --brand-ink: #ffffff;
+  --brand-hover: #43454a;
+
+  --accent: #4176e6;
+  --accent-soft: rgba(65, 118, 230, 0.1);
+  --danger: #ec1313;
+  --success: #22c55e;
+
+  --hairline: 0.5px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --focus: rgba(65, 118, 230, 0.28);
+  --shadow-panel: 0 0 0 0.5px rgba(15, 17, 21, 0.08), 0 8px 24px rgba(15, 17, 21, 0.06);
+  --shadow-menu: 0 0 0 0.5px rgba(15, 17, 21, 0.1), 0 12px 32px rgba(15, 17, 21, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --app-bg: #151517;
+    --surface: #1b1b1c;
+    --surface-2: #232324;
+    --card: #232324;
+
+    --ink: #f9fafb;
+    --ink-2: #cfd3d6;
+    --muted: #cfd3d6;
+    --tertiary: #adb2b8;
+
+    --line: rgba(255, 255, 255, 0.1);
+    --line-strong: rgba(255, 255, 255, 0.16);
+    --field: #232324;
+    --field-hover: rgba(255, 255, 255, 0.06);
+
+    --brand: #f9fafb;
+    --brand-ink: #0f1115;
+    --brand-hover: #cfd3d6;
+
+    --accent: #7aaaff;
+    --accent-soft: rgba(122, 170, 255, 0.12);
+    --danger: #f25a5a;
+    --success: #4ed17e;
+
+    --focus: rgba(122, 170, 255, 0.32);
+    --shadow-panel: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 12px 32px rgba(0, 0, 0, 0.45);
+    --shadow-menu: 0 0 0 0.5px rgba(255, 255, 255, 0.1), 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 20px;
+  background: var(--app-bg);
+  color: var(--ink);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--ink) 28%, transparent);
+  background-clip: content-box;
+}
+
+.svg-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.icon {
+  display: block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- 便签颜色：低饱和底色 + 色条 ---------- */
+
+.note-color-yellow {
+  --note-accent: #f59e0b;
+  --note-card: color-mix(in srgb, #f59e0b 4%, var(--card));
+  --note-card-hover: color-mix(in srgb, #f59e0b 7%, var(--card));
+  --note-editor: color-mix(in srgb, #f59e0b 5%, var(--surface));
+}
+
+.note-color-pink {
+  --note-accent: #ec4899;
+  --note-card: color-mix(in srgb, #ec4899 4%, var(--card));
+  --note-card-hover: color-mix(in srgb, #ec4899 7%, var(--card));
+  --note-editor: color-mix(in srgb, #ec4899 5%, var(--surface));
+}
+
+.note-color-green {
+  --note-accent: #22c55e;
+  --note-card: color-mix(in srgb, #22c55e 4%, var(--card));
+  --note-card-hover: color-mix(in srgb, #22c55e 7%, var(--card));
+  --note-editor: color-mix(in srgb, #22c55e 5%, var(--surface));
+}
+
+.note-color-blue {
+  --note-accent: #4176e6;
+  --note-card: color-mix(in srgb, #4176e6 4%, var(--card));
+  --note-card-hover: color-mix(in srgb, #4176e6 7%, var(--card));
+  --note-editor: color-mix(in srgb, #4176e6 5%, var(--surface));
+}
+
+.note-color-purple {
+  --note-accent: #7c3aed;
+  --note-card: color-mix(in srgb, #7c3aed 4%, var(--card));
+  --note-card-hover: color-mix(in srgb, #7c3aed 7%, var(--card));
+  --note-editor: color-mix(in srgb, #7c3aed 5%, var(--surface));
+}
+
+.note-color-gray {
+  --note-accent: #a2a4a6;
+  --note-card: color-mix(in srgb, #a2a4a6 5%, var(--card));
+  --note-card-hover: color-mix(in srgb, #a2a4a6 8%, var(--card));
+  --note-editor: color-mix(in srgb, #a2a4a6 6%, var(--surface));
+}
+
+@media (prefers-color-scheme: dark) {
+  .note-color-yellow {
+    --note-card: color-mix(in srgb, #f59e0b 8%, var(--card));
+    --note-card-hover: color-mix(in srgb, #f59e0b 11%, var(--card));
+    --note-editor: color-mix(in srgb, #f59e0b 6%, var(--surface));
+  }
+
+  .note-color-pink {
+    --note-card: color-mix(in srgb, #ec4899 8%, var(--card));
+    --note-card-hover: color-mix(in srgb, #ec4899 11%, var(--card));
+    --note-editor: color-mix(in srgb, #ec4899 6%, var(--surface));
+  }
+
+  .note-color-green {
+    --note-card: color-mix(in srgb, #22c55e 8%, var(--card));
+    --note-card-hover: color-mix(in srgb, #22c55e 11%, var(--card));
+    --note-editor: color-mix(in srgb, #22c55e 6%, var(--surface));
+  }
+
+  .note-color-blue {
+    --note-card: color-mix(in srgb, #4176e6 9%, var(--card));
+    --note-card-hover: color-mix(in srgb, #4176e6 12%, var(--card));
+    --note-editor: color-mix(in srgb, #4176e6 6%, var(--surface));
+  }
+
+  .note-color-purple {
+    --note-card: color-mix(in srgb, #7c3aed 9%, var(--card));
+    --note-card-hover: color-mix(in srgb, #7c3aed 12%, var(--card));
+    --note-editor: color-mix(in srgb, #7c3aed 6%, var(--surface));
+  }
+
+  .note-color-gray {
+    --note-card: color-mix(in srgb, #a2a4a6 8%, var(--card));
+    --note-card-hover: color-mix(in srgb, #a2a4a6 11%, var(--card));
+    --note-editor: color-mix(in srgb, #a2a4a6 6%, var(--surface));
+  }
+}
+
+/* ---------- 骨架 ---------- */
+
+.app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--app-bg);
+}
+
+.topbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 8px 0 12px;
+  border-bottom: var(--hairline) solid var(--line);
+  background: var(--app-bg);
+  z-index: 5;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.brand-mark {
+  display: grid;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 7px;
+  background: var(--ink);
+  color: var(--app-bg);
+}
+
+.brand-mark svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.brand-name {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.icon-btn:hover {
+  background: var(--field-hover);
+  color: var(--ink);
+}
+
+.icon-btn.is-active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.icon-btn.danger-hover:hover {
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  color: var(--danger);
+}
+
+.float-only {
+  display: none !important;
+}
+
+.views {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.view {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.view-list {
+  background: var(--app-bg);
+}
+
+/* ---------- 列表 ---------- */
+
+.list-toolbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px 8px;
+}
+
+.search {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  height: 32px;
+  padding: 0 9px;
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--tertiary);
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.search:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--focus);
+  color: var(--ink-2);
+}
+
+.search-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.search input {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 12.5px;
+  color: var(--ink);
+}
+
+.search input::placeholder {
+  color: var(--tertiary);
+}
+
+.search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.search-key {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 4px;
+  background: var(--field);
+  color: var(--tertiary);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.new-btn {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--brand);
+  color: var(--brand-ink);
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background 0.12s ease;
+}
+
+.new-btn:hover {
+  background: var(--brand-hover);
+}
+
+.new-btn .icon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2;
+}
+
+.list-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.note-list {
+  padding: 2px 0 10px;
+}
+
+.note-card {
+  position: relative;
+  display: block;
+  width: calc(100% - 16px);
+  margin: 6px 8px;
+  padding: 11px 12px 9px 14px;
+  border: var(--hairline) solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--note-card);
+  color: var(--ink);
+  text-align: left;
+  box-shadow: inset 2px 0 0 var(--note-accent);
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.note-card:hover {
+  background: var(--note-card-hover);
+  border-color: var(--line-strong);
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.card-pin {
+  display: none;
+  flex: none;
+  color: var(--tertiary);
+}
+
+.card-pin .icon {
+  width: 12px;
+  height: 12px;
+  stroke-width: 1.8;
+}
+
+.note-card.is-pinned .card-pin {
+  display: block;
+}
+
+.card-preview {
+  display: -webkit-box;
+  margin: 2px 0 6px;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 18px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow-wrap: anywhere;
+}
+
+.card-preview.is-empty {
+  color: var(--tertiary);
+}
+
+.card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--tertiary);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.card-time,
+.card-len {
+  white-space: nowrap;
+}
+
+.empty-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 28px 56px;
+  text-align: center;
+}
+
+.empty-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 12px;
+  border-radius: var(--radius-lg);
+  background: var(--field);
+  color: var(--tertiary);
+}
+
+.empty-art svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.empty-title {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.empty-sub {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.empty-btn {
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--brand);
+  color: var(--brand-ink);
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background 0.12s ease;
+}
+
+.empty-btn:hover {
+  background: var(--brand-hover);
+}
+
+.list-foot {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  padding: 0 12px;
+  border-top: var(--hairline) solid var(--line);
+  background: var(--app-bg);
+  color: var(--tertiary);
+  font-size: 11px;
+}
+
+.save-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.save-hint .dot,
+.save-state .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--success) 16%, transparent);
+}
+
+/* ---------- 编辑器 ---------- */
+
+.view-editor {
+  background: var(--note-editor);
+  color: var(--ink);
+  box-shadow: inset 0 2px 0 var(--note-accent);
+}
+
+.editor-head {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3px;
+  height: 48px;
+  padding: 0 6px;
+  border-bottom: var(--hairline) solid var(--line);
+}
+
+.editor-head .icon-btn {
+  color: var(--muted);
+}
+
+.editor-head .icon-btn:hover {
+  background: var(--field-hover);
+  color: var(--ink);
+}
+
+.editor-head .icon-btn.danger-hover:hover {
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  color: var(--danger);
+}
+
+.editor-meta {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1px;
+  padding: 0 6px;
+}
+
+.save-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.save-state.is-saving .dot {
+  background: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.16);
+}
+
+.editor-time {
+  overflow: hidden;
+  color: var(--tertiary);
+  font-size: 10.5px;
+  line-height: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#btn-pin.is-active {
+  background: var(--field-hover);
+  color: var(--ink);
+}
+
+#btn-pin.is-active .icon {
+  fill: currentColor;
+  fill-opacity: 0.12;
+}
+
+#editor {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  padding: 12px 16px 10px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 22px;
+  resize: none;
+  caret-color: var(--ink);
+}
+
+#editor:focus-visible {
+  outline: none;
+}
+
+#editor::placeholder {
+  color: var(--tertiary);
+  opacity: 0.7;
+}
+
+#editor::selection {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.editor-foot {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 9px;
+  border-top: var(--hairline) solid var(--line);
+}
+
+.swatches {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid rgba(15, 17, 21, 0.12);
+  border-radius: 50%;
+  background: var(--sw);
+  transition: box-shadow 0.12s ease;
+}
+
+.swatch:hover {
+  box-shadow: 0 0 0 2px var(--note-editor), 0 0 0 3px var(--line-strong);
+}
+
+.swatch.is-active {
+  box-shadow: 0 0 0 2px var(--note-editor), 0 0 0 3px var(--ink);
+}
+
+.swatch[data-color="yellow"] { --sw: #f59e0b; }
+.swatch[data-color="pink"] { --sw: #ec4899; }
+.swatch[data-color="green"] { --sw: #22c55e; }
+.swatch[data-color="blue"] { --sw: #4176e6; }
+.swatch[data-color="purple"] { --sw: #7c3aed; }
+.swatch[data-color="gray"] { --sw: #a2a4a6; }
+
+@media (prefers-color-scheme: dark) {
+  .swatch {
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+}
+
+.editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 9px;
+  border: var(--hairline) solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 11.5px;
+  font-weight: 500;
+  transition: background 0.12s ease;
+}
+
+.pill-btn .icon {
+  width: 14px;
+  height: 14px;
+}
+
+.pill-btn:hover {
+  background: var(--field-hover);
+}
+
+.pill-btn.accent {
+  border-color: transparent;
+  background: var(--brand);
+  color: var(--brand-ink);
+}
+
+.pill-btn.accent:hover {
+  background: var(--brand-hover);
+}
+
+/* ---------- 菜单 / 提示 / 弹窗 ---------- */
+
+.menu {
+  position: absolute;
+  top: 52px;
+  right: 8px;
+  z-index: 60;
+  width: 208px;
+  padding: 6px;
+  border: var(--hairline) solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-menu);
+  transform-origin: top right;
+  animation: pop-in 0.12s ease;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  height: 32px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  text-align: left;
+}
+
+.menu-item:hover {
+  background: var(--field-hover);
+  color: var(--ink);
+}
+
+.menu-item .icon {
+  width: 15px;
+  height: 15px;
+  color: var(--tertiary);
+}
+
+.menu-sep {
+  height: var(--hairline);
+  margin: 5px 4px;
+  background: var(--line);
+}
+
+.menu-note {
+  padding: 7px 9px 5px;
+  color: var(--tertiary);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100% - 32px);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: #292929;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .toast {
+    background: #353638;
+  }
+}
+
+.toast.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.toast-action {
+  padding: 2px 4px;
+  border: 0;
+  background: none;
+  color: #7aaaff;
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dialog {
+  width: min(340px, calc(100vw - 36px));
+  padding: 0;
+  border: var(--hairline) solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-panel);
+}
+
+.dialog::backdrop {
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(2px);
+}
+
+.dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 12px 10px 16px;
+}
+
+.dialog-head h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.shortcut-list {
+  margin: 0;
+  padding: 0 16px 6px;
+}
+
+.shortcut-list > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: var(--hairline) solid var(--line);
+}
+
+.shortcut-list dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.shortcut-list dd {
+  display: flex;
+  gap: 3px;
+  margin: 0;
+}
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border: var(--hairline) solid var(--line-strong);
+  border-radius: 4px;
+  background: var(--field);
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.dialog-tip {
+  margin: 0;
+  padding: 6px 16px 16px;
+  color: var(--tertiary);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.dialog-tip code {
+  font-size: 10.5px;
+}
+
+/* ---------- 窄屏 ---------- */
+
+@media (max-width: 330px) {
+  .brand-name {
+    display: none;
+  }
+
+  .new-btn span {
+    display: none;
+  }
+
+  .new-btn {
+    width: 32px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .search-key {
+    display: none;
+  }
+}
+
+/* ---------- 浮窗模式 ---------- */
+
+.floating-mode body {
+  background: transparent;
+}
+
+.floating-mode .app {
+  height: 100vh;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.floating-mode .topbar {
+  height: 44px;
+  padding: 0 6px 0 10px;
+  background: var(--surface);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.floating-mode .view-list,
+.floating-mode .list-foot {
+  background: var(--surface);
+}
+
+.floating-mode .topbar:active {
+  cursor: grabbing;
+}
+
+.floating-mode .brand-mark {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+}
+
+.floating-mode .brand-mark svg {
+  width: 12px;
+  height: 12px;
+}
+
+.floating-mode .brand-name {
+  font-size: 12.5px;
+}
+
+.floating-mode .top-actions .icon-btn {
+  width: 26px;
+  height: 26px;
+}
+
+.floating-mode .float-only {
+  display: inline-flex !important;
+}
+
+.floating-mode .side-only {
+  display: none !important;
+}
+
+.floating-mode .list-toolbar {
+  padding: 8px 9px 5px;
+}
+
+.floating-mode .search {
+  height: 30px;
+}
+
+.floating-mode .new-btn {
+  height: 30px;
+}
+
+.floating-mode .note-card {
+  width: calc(100% - 12px);
+  margin: 4px 6px;
+  padding: 9px 10px 8px 12px;
+  border-radius: 10px;
+}
+
+.floating-mode .card-preview {
+  margin-bottom: 5px;
+  -webkit-line-clamp: 2;
+}
+
+.floating-mode .list-foot {
+  height: 28px;
+  padding: 0 28px 0 10px;
+}
+
+.floating-mode .editor-head {
+  height: 44px;
+}
+
+.floating-mode #editor {
+  padding: 10px 13px 8px;
+  font-size: 13.5px;
+  line-height: 21px;
+}
+
+.floating-mode .editor-foot {
+  padding: 7px 28px 8px 8px;
+}
+
+.floating-mode .swatches {
+  gap: 4px;
+}
+
+.floating-mode .swatch {
+  width: 15px;
+  height: 15px;
+}
+
+.floating-mode .toast {
+  bottom: 10px;
+}
+
+.floating-mode .resize-grip {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  z-index: 20;
+  display: block !important;
+  width: 18px;
+  height: 18px;
+  cursor: nwse-resize;
+  touch-action: none;
+}
+
+.resize-grip::before {
+  content: "";
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  border-bottom: 2px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  border-bottom-right-radius: 2px;
+}
+
+.floating-mode .app.is-collapsed .views {
+  display: none;
+}
+
+.floating-mode .app.is-collapsed .toast,
+.floating-mode .app.is-collapsed .menu {
+  display: none !important;
+}
+
+.floating-mode .app.is-collapsed .resize-grip {
+  display: none !important;
+}
+
+.floating-mode .app.is-collapsed .topbar {
+  border-bottom: 0;
+}
+
+.floating-mode #btn-collapse .icon {
+  transition: transform 0.16s ease;
+}
+
+.floating-mode #btn-collapse.is-collapsed .icon {
+  transform: rotate(180deg);
+}
+
+/* DSH 的超椭圆圆角（支持的浏览器生效） */
+@supports (corner-shape: superellipse(1.5)) {
+  * {
+    corner-shape: superellipse(1.5);
+  }
+}
+

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>便签</title>
+  <link rel="stylesheet" href="panel.css">
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="svg-sprite" aria-hidden="true">
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="m19 6-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.3" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-side" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></symbol>
+    <symbol id="i-journal" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5v-13z"/><path d="M8 3v18"/><path d="M12 8h5M12 12h5"/></symbol>
+    <symbol id="i-float" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><rect x="12" y="12" width="7" height="5" rx="1"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 21h16"/></symbol>
+    <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/></symbol>
+    <symbol id="i-insert" viewBox="0 0 24 24"><path d="M8 3h8"/><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M5 3h14a2 2 0 0 1 2 2v10l-6 6H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M21 15h-4a2 2 0 0 0-2 2v4"/><path d="M8 8h8M8 12h5"/></symbol>
+  </svg>
+
+  <div class="app" id="app">
+    <header class="topbar" id="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M7 8h10M7 12h7M7 16h4"/></svg>
+        </span>
+        <span class="brand-name">便签</span>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="btn-journal" type="button" title="打开全屏日记本" aria-label="打开全屏日记本">
+          <svg class="icon"><use href="#i-journal"></use></svg>
+        </button>
+        <button class="icon-btn float-only" id="btn-side" type="button" title="在侧边栏打开" aria-label="在侧边栏打开">
+          <svg class="icon"><use href="#i-side"></use></svg>
+        </button>
+        <button class="icon-btn side-only" id="btn-float" type="button" title="显示页面浮窗" aria-label="显示页面浮窗">
+          <svg class="icon"><use href="#i-float"></use></svg>
+        </button>
+        <button class="icon-btn float-only" id="btn-collapse" type="button" title="收起浮窗" aria-label="收起浮窗">
+          <svg class="icon"><use href="#i-chevron-down"></use></svg>
+        </button>
+        <button class="icon-btn side-only" id="btn-more" type="button" title="更多" aria-label="更多" aria-haspopup="menu" aria-expanded="false">
+          <svg class="icon"><use href="#i-more"></use></svg>
+        </button>
+        <button class="icon-btn float-only" id="btn-close" type="button" title="关闭浮窗" aria-label="关闭浮窗">
+          <svg class="icon"><use href="#i-close"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="views">
+      <section class="view view-list" id="view-list">
+        <div class="list-toolbar">
+          <label class="search" for="search">
+            <svg class="icon search-icon"><use href="#i-search"></use></svg>
+            <input id="search" type="search" placeholder="搜索便签" autocomplete="off" spellcheck="false" aria-label="搜索便签">
+            <kbd class="search-key" aria-hidden="true">/</kbd>
+          </label>
+          <button class="new-btn" id="btn-new" type="button" title="新建便签" aria-label="新建便签">
+            <svg class="icon"><use href="#i-plus"></use></svg>
+            <span>新建</span>
+          </button>
+        </div>
+
+        <div class="list-scroll" id="list-scroll">
+          <div class="note-list" id="note-list"></div>
+          <div class="empty-list" id="empty-list" hidden>
+            <div class="empty-art">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14a2 2 0 0 1 2 2v10l-6 6H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M21 15h-4a2 2 0 0 0-2 2v4"/><path d="M8 8h8M8 12h5"/></svg>
+            </div>
+            <p class="empty-title" id="empty-title">还没有便签</p>
+            <p class="empty-sub" id="empty-sub">把想法、地址、代码片段随手记下来</p>
+            <button class="empty-btn" id="btn-new-empty" type="button">新建第一条便签</button>
+          </div>
+        </div>
+
+        <footer class="list-foot">
+          <span id="count-label">0 条便签</span>
+          <span class="save-hint"><span class="dot"></span>自动保存</span>
+        </footer>
+      </section>
+
+      <section class="view view-editor note-color-yellow" id="view-editor" hidden>
+        <div class="editor-head">
+          <button class="icon-btn" id="btn-back" type="button" title="返回列表" aria-label="返回列表">
+            <svg class="icon"><use href="#i-arrow-left"></use></svg>
+          </button>
+          <div class="editor-meta">
+            <span class="save-state" id="save-state"><span class="dot"></span>已保存</span>
+            <span class="editor-time" id="editor-time"></span>
+          </div>
+          <button class="icon-btn" id="btn-pin" type="button" title="置顶" aria-label="置顶" aria-pressed="false">
+            <svg class="icon"><use href="#i-pin"></use></svg>
+          </button>
+          <button class="icon-btn danger-hover" id="btn-delete" type="button" title="删除便签" aria-label="删除便签">
+            <svg class="icon"><use href="#i-trash"></use></svg>
+          </button>
+        </div>
+
+        <textarea id="editor" placeholder="写点什么…" spellcheck="false" aria-label="便签内容"></textarea>
+
+        <div class="editor-foot">
+          <div class="swatches" id="swatches" role="group" aria-label="便签颜色"></div>
+          <div class="editor-actions">
+            <button class="pill-btn" id="btn-copy" type="button" title="复制全文">
+              <svg class="icon"><use href="#i-copy"></use></svg><span>复制</span>
+            </button>
+            <button class="pill-btn accent" id="btn-insert" type="button" title="插入到网页输入框">
+              <svg class="icon"><use href="#i-insert"></use></svg><span>插入</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="menu" id="menu" role="menu" hidden>
+      <button class="menu-item" type="button" data-action="export" role="menuitem">
+        <svg class="icon"><use href="#i-download"></use></svg>导出全部便签
+      </button>
+      <button class="menu-item" type="button" data-action="import" role="menuitem">
+        <svg class="icon"><use href="#i-upload"></use></svg>导入便签
+      </button>
+      <button class="menu-item" type="button" data-action="journal" role="menuitem">
+        <svg class="icon"><use href="#i-journal"></use></svg>全屏日记本
+      </button>
+      <div class="menu-sep"></div>
+      <button class="menu-item" type="button" data-action="shortcuts" role="menuitem">
+        <svg class="icon"><use href="#i-keyboard"></use></svg>键盘快捷键
+      </button>
+      <div class="menu-note">便签只保存在这台电脑的浏览器里，可随时导出备份。</div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="resize-grip float-only" id="resize-grip" title="拖动调整大小" aria-hidden="true"></div>
+    <input type="file" id="import-file" accept="application/json,.json" hidden>
+  </div>
+
+  <dialog class="dialog" id="dialog-shortcuts">
+    <div class="dialog-head">
+      <h2>键盘快捷键</h2>
+      <button class="icon-btn" id="btn-dialog-close" type="button" aria-label="关闭">
+        <svg class="icon"><use href="#i-close"></use></svg>
+      </button>
+    </div>
+    <dl class="shortcut-list">
+      <div><dt>打开便签侧边栏</dt><dd><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Y</kbd></dd></div>
+      <div><dt>显示 / 隐藏浮窗</dt><dd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>S</kbd></dd></div>
+      <div><dt>新建便签</dt><dd><kbd>Alt</kbd><kbd>Shift</kbd><kbd>N</kbd></dd></div>
+      <div><dt>搜索便签</dt><dd><kbd>/</kbd></dd></div>
+    </dl>
+    <p class="dialog-tip">可在 <code>chrome://extensions/shortcuts</code> 中修改快捷键。</p>
+  </dialog>
+
+  <script src="panel.js"></script>
+</body>
+</html>

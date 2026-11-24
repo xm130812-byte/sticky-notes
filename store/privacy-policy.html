@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>隐私政策 · 便签 Sticky Notes</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f9fafb;
+    --surface: #ffffff;
+    --text: #0f1115;
+    --muted: #5c6167;
+    --faint: #81858c;
+    --line: rgba(15, 17, 21, 0.10);
+    --accent: #4176e6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151517;
+      --surface: #1b1b1c;
+      --text: #f2f3f5;
+      --muted: #a8adb4;
+      --faint: #81858c;
+      --line: rgba(255, 255, 255, 0.10);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 72px 28px 96px;
+  }
+  .kicker {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  h1 {
+    margin: 12px 0 8px;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .meta { color: var(--faint); font-size: 13px; margin-bottom: 36px; }
+  .sheet {
+    background: var(--surface);
+    border: 0.5px solid var(--line);
+    border-radius: 16px;
+    padding: 8px 28px;
+  }
+  h2 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 28px 0 8px;
+  }
+  h2:first-child { margin-top: 24px; }
+  p { margin: 0 0 12px; color: var(--muted); }
+  strong { color: var(--text); font-weight: 600; }
+  ul { margin: 0 0 14px; padding-left: 20px; color: var(--muted); }
+  li { margin-bottom: 6px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4px 0 16px;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 9px 0;
+    border-bottom: 0.5px solid var(--line);
+    vertical-align: top;
+  }
+  th { color: var(--faint); font-weight: 500; width: 34%; }
+  td { color: var(--muted); }
+  tr:last-child th, tr:last-child td { border-bottom: 0; }
+  .callout {
+    background: var(--surface);
+    border: 0.5px solid var(--line);
+    border-left: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 0 0 28px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  footer {
+    margin-top: 32px;
+    color: var(--faint);
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">Sticky Notes / Privacy</div>
+  <h1>隐私政策</h1>
+  <div class="meta">最后更新：2026 年 11 月 24 日 · 适用于「便签 · Sticky Notes」浏览器扩展</div>
+
+  <div class="callout">
+    一句话：<strong>这个扩展不收集你的任何数据。</strong>便签只存在你自己的浏览器里，不联网、不上传、没有账号、没有统计。
+  </div>
+
+  <div class="sheet">
+    <h2>1. 我们收集什么</h2>
+    <p><strong>什么都不收集。</strong>扩展没有服务器，代码中不存在任何网络请求（没有 <code>fetch</code>、<code>XMLHttpRequest</code> 或 WebSocket），也不包含任何第三方统计、广告或崩溃上报 SDK。</p>
+
+    <h2>2. 你的便签存在哪里</h2>
+    <p>便签内容、颜色、置顶状态、浮窗位置和界面偏好，全部保存在浏览器的 <code>chrome.storage.local</code> 中，位于你自己的电脑上。扩展开发者无法访问这些数据。</p>
+    <p>删除扩展、清除浏览器数据或删除浏览器配置文件，都会一并清除这些便签。建议定期使用扩展内的「导出全部便签」做备份。</p>
+
+    <h2>3. 扩展会访问哪些内容</h2>
+    <table>
+      <tr><th>网页内容</th><td>不读取、不保存、不上传。内容脚本只在页面上创建一个空容器，用来显示浮窗界面。</td></tr>
+      <tr><th>浏览历史</th><td>不访问。</td></tr>
+      <tr><th>剪贴板</th><td>只在你点击「复制」时写入，不读取剪贴板内容。</td></tr>
+      <tr><th>输入框</th><td>只在你点击「插入」时，把当前便签的文字写进你正在编辑的输入框。</td></tr>
+      <tr><th>选中文字</th><td>只在你使用右键菜单「把选中文字存为便签」时读取所选片段，并存入本地便签。</td></tr>
+    </table>
+
+    <h2>4. 第三方</h2>
+    <p>没有第三方。扩展不加载任何远程脚本、字体或图片，所有资源都打包在扩展内部。你的数据不会被出售、共享或转让给任何人。</p>
+
+    <h2>5. 权限与用途</h2>
+    <ul>
+      <li><strong>storage / unlimitedStorage</strong>：在本机保存便签。</li>
+      <li><strong>sidePanel</strong>：提供浏览器侧边栏界面。</li>
+      <li><strong>contextMenus</strong>：右键菜单「存为便签」「打开日记本」。</li>
+      <li><strong>clipboardWrite</strong>：复制便签全文。</li>
+      <li><strong>访问所有网站</strong>：仅在网页上显示浮窗便签，以及在用户主动点击「插入」时写入文本框。</li>
+    </ul>
+
+    <h2>6. 儿童隐私</h2>
+    <p>扩展不面向 13 岁以下儿童，也不收集任何人的个人信息。</p>
+
+    <h2>7. 政策变更</h2>
+    <p>如果本政策发生变化，会更新本页面顶部的日期。由于扩展不收集数据，预计不会有实质性变更。</p>
+
+    <h2>8. 联系方式</h2>
+    <p>有关隐私的问题，请通过扩展商店页面上的开发者联系方式与我联系。</p>
+  </div>
+
+  <footer>
+    English summary: This extension collects no data. All notes are stored locally in chrome.storage.local. There are no network requests, no analytics, no ads and no third-party services.
+  </footer>
+</main>
+</body>
+</html>
